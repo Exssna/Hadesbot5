@@ -73,7 +73,7 @@ rdaftar = "OBRIGADO POR SE REGISTAR PARA SE TORNAR UM AMIGO DO HADES BOT😁"
 rmenu = "OI AMIGO HADESBOT👋 SR>ALLISON DONO YAA:)"
 botinfo = "OI AMIGO HADESBOT👋 SR>ALLISON DONO YAA:)"
 limitt = 1000
-memberLimit = 50
+memberLimit = 10
 ban = []
 premium = ["558688036194@s.whatsapp.net","+5512983067193@s.whatsapp.net","5521981572069@s.whatsapp.net"]
 
