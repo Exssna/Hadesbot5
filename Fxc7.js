@@ -49,7 +49,7 @@ const katailham = JSON.parse(fs.readFileSync('./database/json/katailham.json'))
 const adminNumber = JSON.parse(fs.readFileSync('./database/json/admin.json'))
 const anime = JSON.parse(fs.readFileSync('./database/json/anime.json'))
 const blocked = JSON.parse(fs.readFileSync('./database/json/blocked.json'))
-const antilink = JSON.parse(fs.readFileSync('./database/json/antilink.json'))
+const antilink = JSON.parse(fs.readFileSync('./src/antilink.json'))
 let {
 instagram, yt, groupLink
 } = setting
@@ -305,20 +305,28 @@ async function starts() {
                 fs.writeFileSync('./database/json/limit.json', JSON.stringify(_limit))
             }
         }
-       if (messagesLink.includes("://chat.whatsapp.com/")){
-		if (!isGroup) return
-		if (!isAntiLink) return
-		if (isGroupAdmins) return reply(`${pushname2} Seu administrador de grupo não será expulso`)
-		frhan.updatePresence(from, Presence.composing)
-		var Kick = `${sender.split("@")[0]}@s.whatsapp.net`
-		setTimeout( () => {
-		reply('byee👋')
-		}, 1100)
-		setTimeout( () => {
-		frhan.groupRemove(from, [Kick]).catch((e) => {reply(`*ERROR:* ${e}`)}) 
-					}, 1000)
-		setTimeout( () => {
-		reply(`Link de grupo detectado *${pushname2}* você vai ser chutado`)
+      if (mesejAnti.includes("://chat.whatsapp.com/")){
+		        if (!isGroup) return
+		        if (!isAntiLink) return
+		        if (isGroupAdmins) return reply('administrador de grupo pode postar:v')
+		        client.updatePresence(from, Presence.composing)
+		        if (mesejAnti.includes("#izinbos")) return reply("Iya kak jangan spam ya")
+		        var kic = `${sender.split("@")[0]}@s.whatsapp.net`
+		        reply(`*「 LINK DE GRUPO DETECTADO 」* \nVoce sera removido por postar link de outro grupo :)`)
+		        setTimeout( () => {
+			        client.groupRemove(from, [kic]).catch((e)=>{reply(`Felizmente nao e admin, se o admin ja o chutou!`)})
+		        }, 3000)
+		        setTimeout( () => {
+			        client.updatePresence(from, Presence.composing)
+			        reply("foi avisado :v")
+		        }, 2000)
+		        setTimeout( () => {
+			        client.updatePresence(from, Presence.composing)
+			        reply("vou te remover ")
+		        }, 1000)
+		        setTimeout( () => {
+			        client.updatePresence(from, Presence.composing)
+			        reply("Adeus corno?")
 		}, 0)
 		}
 
@@ -2502,24 +2510,23 @@ async function starts() {
 					}
 					break 
 				case 'antilink':
-				if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
-					if (args.length < 1) return reply('digite !antilink on para ativar')
-					if ((args[0]) === 'on') {
-						if (isAntiLink) return reply('anti-link está ligado')
+					if (args.length < 1) return reply('digite 1 para ativar')
+					if (Number(args[0]) === 1) {
+						if (isAntiLink) return reply('EMANG MATI?')
 						antilink.push(from)
-						fs.writeFileSync('./database/json/antilink.json', JSON.stringify(antilink))
-						reply(`\`\`\`✓Recurso anti-link habilitado com sucesso no grupo\`\`\` *${groupMetadata.subject}*`)
-					} else if ((args[0]) === 'off') {
-						if (!isAntiLink) return reply('anti link está desligado')
-						antilink.splice(from, 1)
-						fs.writeFileSync('./database/json/antilink.json', JSON.stringify(antilink))
-						reply(`\`\`\`✓Recurso anti-link de grupo desativado com sucesso\`\`\` *${groupMetadata.subject}*`)
+						fs.writeFileSync('./src/antilink.json', JSON.stringify(antilink))
+						reply('「SUCESSO」ATIVAR ANTI LINKS NO GRUPO')
+						client.sendMessage(from,`ALERTA!!! Se voce nao e adm nao envie links de grupo ou vou te remover`, text)
+					} else if (Number(args[0]) === 0) {
+						if (!isAntiLink) return reply('NAO ESTA ATIVO ?')
+						var ini = anti.botLangsexOf(from)
+						antilink.splice(ini, 1)
+						fs.writeFileSync('./src/antilink.json', JSON.stringify(antilink))
+						reply('「SUCESSO」ANTI LINK DESLIGADO NO GRUPO')
 					} else {
-						reply('ligado para ativar, desligado para desativar')
+						reply('1 ativar, 0 desabilitar')
 					}
-					break
+					break 
 				case 'caklontong':
                 if (isBanned) return reply(mess.only.benned)    
 				if (!isUser) return reply(mess.only.userB)
